@@ -1,11 +1,8 @@
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class AFA {
     
-    List<Equipos> equipos = new LinkedList();
+    List<Equipos> equipos = new ArrayList();
 
     public AFA(String[] clubes) {
       for (int i = 0 ;clubes.length>i;i++){
@@ -31,19 +28,6 @@ public class AFA {
     }
 
     public void contarPosicion(String posicion){
-
-        for(int i=0;equipos.size() > i; i++){
-            int salida = 0;
-            for (int j=0;equipos.get(i).Jugadores.size()>j; j++){
-                if (equipos.get(i).Jugadores.get(j) instanceof Jugador) {
-                    if (((Jugador) equipos.get(i).Jugadores.get(j)).getPosicion() == posicion) {
-                        salida++;
-                    }
-                }
-            }
-            System.out.println(equipos.get(i).getNombre()+" Tiene "+ salida +" " +posicion+" es y un total de "+equipos.get(i).getCantJugadores()+"Jugadores");
-
-        }
 
     }
     
