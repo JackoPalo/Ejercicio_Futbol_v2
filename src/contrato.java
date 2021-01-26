@@ -3,9 +3,9 @@ import java.util.Date;
 public class contrato {
 
 
-private int DNI;
-private String posicion,club;
-private Date fecha_in,fecha_fin;
+    private int DNI;
+    private String posicion,club;
+    private Date fecha_in,fecha_fin;
 
 
 

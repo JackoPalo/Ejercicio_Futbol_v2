@@ -14,7 +14,6 @@ public class Jugador {
     public String getNombre() {
         return this.Nombre;
     }
-
     public String getClub() {
         return club;
     }
