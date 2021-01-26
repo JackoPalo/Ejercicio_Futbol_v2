@@ -1,17 +1,29 @@
 import java.util.List;
 
-public class Jugador extends persona {
-    String  Telefono,emails,club,fechas_entre_las_cuales_jugo,Fecha_nacimiento,fecha_debut,partidosJugados,peso,altura, posicion;
-    int goles;
+public class Jugador {
+    private String  Nombre,Telefono,emails,club;
+    int DNI;
     private List<contrato> historial;
 
-    public Jugador(String club, String posicion, String Nombre) {
-        super(Nombre);
-        this.club = club;
-        this.posicion = posicion;
+    public Jugador(String nombre, int DNI, List<contrato> historial) {
+        Nombre = nombre;
+        this.DNI = DNI;
+        this.historial = historial;
     }
 
-    public String getPosicion() {
-        return this.posicion;
+    public String getNombre() {
+        return this.Nombre;
+    }
+
+    public String getClub() {
+        return club;
+    }
+
+    public int getDNI() {
+        return DNI;
+    }
+
+    public List<contrato> getHistorial() {
+        return historial;
     }
 }
