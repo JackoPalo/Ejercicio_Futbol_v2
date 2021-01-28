@@ -1,6 +1,8 @@
+import java.sql.*;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
 
 public class Main {
 
@@ -16,7 +18,7 @@ public class Main {
         Asociacion.Ordenar();
         System.out.println("");
         System.out.println(Asociacion.jugadoresPorFecha(new Date(118,1,2),clubes));
-
+        Asociacion.cargarAtabla();
     }
 
 }

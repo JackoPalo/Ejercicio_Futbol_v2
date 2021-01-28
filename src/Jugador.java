@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Jugador {
     private String  Nombre,Telefono,emails,club;
-    int DNI;
+    private int DNI;
     private List<contrato> historial;
 
     public Jugador(String nombre, int DNI, List<contrato> historial) {

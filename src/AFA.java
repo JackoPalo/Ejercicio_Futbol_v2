@@ -1,4 +1,9 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.*;
+import java.sql.*;
+import java.util.Date;
 
 public class AFA {
     
@@ -83,5 +88,36 @@ public class AFA {
         if (Salida ==""){ Salida = "No hubo jugadores en esa fecha";}
         return Salida;
     }
-    
+
+    public void cargarAtabla(){
+        Connection connection = null;
+        try {
+            //Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
+            Statement st = connection.createStatement();
+            java.sql.Date fecha_in;
+            java.sql.Date fecha_fin;
+            for (int i=0;Jugadores.size()>i;i++){
+                st.execute("INSERT INTO `afa`.`jugador` (`DNI`, `nombre`) VALUES ('"+Jugadores.get(i).getDNI() +"', '"+Jugadores.get(i).getNombre()+"');");
+                for(int j=0;Jugadores.get(i).getHistorial().size() >j; j++){
+                    fecha_in = new java.sql.Date(Jugadores.get(i).getHistorial().get(j).getFecha_in().getTime());
+                    fecha_fin = new java.sql.Date(Jugadores.get(i).getHistorial().get(j).getFecha_fin().getTime());
+                    st.execute("INSERT INTO `afa`.`contratos` (`DNI`, `fechaInicio`, `fechaFin`, `club`, `posicion`) VALUES ('"+Jugadores.get(i).getHistorial().get(j).getDNI()+"', '"+fecha_in+"', '"+fecha_fin+"', '"+Jugadores.get(i).getHistorial().get(j).getClub()+"', '"+Jugadores.get(i).getHistorial().get(j).getPosicion()+"');");
+
+                }
+            }
+
+
+        }catch(Exception e){
+            System.out.println(" estas testeando, borra la tabla pls   "+e.getMessage());
+        } finally {
+            try{
+                if ( connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e){
+               e.printStackTrace();
+            }
+        }
+    }
 }
