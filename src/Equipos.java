@@ -9,7 +9,7 @@ public class Equipos implements equioRegistrable {
 
     private int CUIT;
     private String Nombre;
-    private String Division = "A";
+    private String Division;
 
     public Equipos(int CUIT, String nombre, String division) {
         this.CUIT = CUIT;
@@ -52,7 +52,7 @@ public class Equipos implements equioRegistrable {
 
 
         }catch (Exception e){
-            System.out.println("insert in contrato->"+e.getMessage());
+            System.out.println("insert in equipos->"+e.getMessage());
         } finally {
             try{
                 if ( connection != null){
@@ -80,7 +80,7 @@ public class Equipos implements equioRegistrable {
             //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
-            ResultSet rs = st.getResultSet();
+            ResultSet rs;
             rs = st.executeQuery("SELECT * FROM afa.equipos");
 
             while(rs.next()) {
@@ -89,7 +89,7 @@ public class Equipos implements equioRegistrable {
             rs.beforeFirst();
         }
         catch (Exception e) {
-            System.out.println("read in contrato->"+e.getMessage());
+            System.out.println("read in equipos->"+e.getMessage());
         } finally {
             try {
                 if (connection != null) {
@@ -100,8 +100,8 @@ public class Equipos implements equioRegistrable {
             }
         }
 
-        for(int j=0;equipoList.size()>j ;j++){
-            System.out.println("   "+ equipoList.get(j).getCUIT()+" desde "+equipoList.get(j).getNombre()+" hasta "+equipoList.get(j).getDivision() );
+        for (Equipos equipos : equipoList) {
+            System.out.println("   " + equipos.getCUIT() + " desde " + equipos.getNombre() + " hasta " + equipos.getDivision());
         }
 
 

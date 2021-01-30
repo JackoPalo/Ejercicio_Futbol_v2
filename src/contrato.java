@@ -83,11 +83,9 @@ public class contrato implements contratoRegistrable{
         Connection connection = null;
         List<contrato> contratoList= new ArrayList<>();
         try {
-            //Class.forName("com.mysql.cj.jdbc.Driver");
-            //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
-            ResultSet rs = st.getResultSet();
+            ResultSet rs;
             rs = st.executeQuery("SELECT * FROM afa.contratos");
 
             while(rs.next()) {
@@ -107,8 +105,8 @@ public class contrato implements contratoRegistrable{
             }
         }
 
-        for(int j=0;contratoList.size()>j ;j++){
-            System.out.println("   "+ contratoList.get(j).getClub()+" desde "+contratoList.get(j).getFecha_in()+" hasta "+contratoList.get(j).getFecha_fin() );
+        for (contrato contrato : contratoList) {
+            System.out.println("   " + contrato.getClub() + " desde " + contrato.getFecha_in() + " hasta " + contrato.getFecha_fin());
         }
 
 
@@ -117,11 +115,9 @@ public class contrato implements contratoRegistrable{
         Connection connection = null;
         List<contrato> contratoList= new ArrayList<>();
         try {
-            //Class.forName("com.mysql.cj.jdbc.Driver");
-            //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
-            ResultSet rs = st.getResultSet();
+            ResultSet rs ;
             rs = st.executeQuery("SELECT * FROM afa.contratos");
 
             while(rs.next()) {
@@ -143,8 +139,8 @@ public class contrato implements contratoRegistrable{
             }
         }
 
-        for(int j=0;contratoList.size()>j ;j++){
-            System.out.println("   "+ contratoList.get(j).getClub()+" desde "+contratoList.get(j).getFecha_in()+" hasta "+contratoList.get(j).getFecha_fin() );
+        for (contrato contrato : contratoList) {
+            System.out.println("   " + contrato.getClub() + " desde " + contrato.getFecha_in() + " hasta " + contrato.getFecha_fin());
         }
 
         return contratoList;

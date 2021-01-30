@@ -7,17 +7,17 @@ import java.util.Date;
 
 public class AFA {
     
-    List<Jugador> Jugadores = new ArrayList();
+    List<Jugador> Jugadores = new ArrayList<>();
 
     public List<contrato> generarHistorial(int DNis,List<Equipos> clubes){
         String[] Posiciones = {"Atacante","Defensor","Central"};
-        Date fecha_ini = new Date();
-        Date fecha_fin = new Date();
+        Date fecha_ini;
+        Date fecha_fin;
         List<contrato> sHistorial = new ArrayList<>();
-        for (int i=0;clubes.size() > i;i++) {
-            fecha_ini = new Date((int) (117-Math.random()*5), 1, 3);
-            fecha_fin = new Date((int)(117+Math.random()*2), 1, 3);
-            sHistorial.add(new contrato(DNis, clubes.get(i).getNombre(), Posiciones[(int)(Math.random()*10)%3], fecha_ini, fecha_fin));
+        for (Equipos clube : clubes) {
+            fecha_ini = new Date((int) (117 - Math.random() * 5), 1, 3);
+            fecha_fin = new Date((int) (117 + Math.random() * 2), 1, 3);
+            sHistorial.add(new contrato(DNis, clube.getNombre(), Posiciones[(int) (Math.random() * 10) % 3], fecha_ini, fecha_fin));
         }
 
         return sHistorial;
@@ -39,53 +39,44 @@ public class AFA {
 
 
     public void MostrarLista (){
-        for(int i=0;Jugadores.size() > i; i++){
-                System.out.println(Jugadores.get(i).getNombre() + " Jugo en "+
-                        Jugadores.get(i).getHistorial().size() +" clubes");
-                for(int j=0;Jugadores.get(i).getHistorial().size()>j ;j++){
-                   System.out.println("   "+ Jugadores.get(i).getHistorial().get(j).getClub()+" desde "+Jugadores.get(i).getHistorial().get(j).getFecha_in()+" hasta "+Jugadores.get(i).getHistorial().get(j).getFecha_fin()+Jugadores.get(i).getHistorial().get(j).getPosicion());
-                }
+        for (Jugador jugadore : Jugadores) {
+            System.out.println(jugadore.getNombre() + " Jugo en " +
+                    jugadore.getHistorial().size() + " clubes");
+            for (int j = 0; jugadore.getHistorial().size() > j; j++) {
+                System.out.println("   " + jugadore.getHistorial().get(j).getClub() + " desde " + jugadore.getHistorial().get(j).getFecha_in() + " hasta " + jugadore.getHistorial().get(j).getFecha_fin() + jugadore.getHistorial().get(j).getPosicion());
+            }
         }
 
     }
     public void Ordenar(){
 
-        Collections.sort(this.Jugadores, new Comparator<Jugador>() {
-            public int compare(Jugador obj1, Jugador obj2) {
-                return obj1.getNombre().compareToIgnoreCase(obj2.getNombre());
-            }
-        });
+        this.Jugadores.sort((obj1, obj2) -> obj1.getNombre().compareToIgnoreCase(obj2.getNombre()));
     }
 
     public String jugadoresPorFecha(Date fecha,List<Equipos> clubes){
-        clubes.sort(new Comparator<Equipos>() {
-            @Override
-            public int compare(Equipos s, Equipos t1) {
-                return s.getNombre().compareToIgnoreCase(t1.getNombre());
-            }
-        });
+        clubes.sort((s, t1) -> s.getNombre().compareToIgnoreCase(t1.getNombre()));
         String Salida = "";
         int[] contadorClubes = new int[clubes.size()];
-        for(int i=0;Jugadores.size()>i;i++){
-            for (int j=0;Jugadores.get(i).getHistorial().size() >j;j++){
-               if( fecha.after(Jugadores.get(i).getHistorial().get(j).getFecha_in()) && fecha.before(Jugadores.get(i).getHistorial().get(j).getFecha_fin())){
-                   //Salida+= Jugadores.get(i).getDNI()+" Jugo en  "+ Jugadores.get(i).getHistorial().get(j).getClub()+" desde "+ Jugadores.get(i).getHistorial().get(j).getFecha_in()+" hasta "+Jugadores.get(i).getHistorial().get(j).getFecha_fin()+"\n";
-                  for(int k = 0;clubes.size() > k ; k++){
-                     if(Jugadores.get(i).getHistorial().get(j).getClub().equals(clubes.get(k).getNombre()))
-                       contadorClubes[k]++;
-                      //System.out.println(Jugadores.get(i).getHistorial().get(j).getClub());-----------Comprobando Resultados
-                  }
+        for (Jugador jugadore : Jugadores) {
+            for (int j = 0; jugadore.getHistorial().size() > j; j++) {
+                if (fecha.after(jugadore.getHistorial().get(j).getFecha_in()) && fecha.before(jugadore.getHistorial().get(j).getFecha_fin())) {
+                    //Salida+= Jugadores.get(i).getDNI()+" Jugo en  "+ Jugadores.get(i).getHistorial().get(j).getClub()+" desde "+ Jugadores.get(i).getHistorial().get(j).getFecha_in()+" hasta "+Jugadores.get(i).getHistorial().get(j).getFecha_fin()+"\n";
+                    for (int k = 0; clubes.size() > k; k++) {
+                        if (jugadore.getHistorial().get(j).getClub().equals(clubes.get(k).getNombre()))
+                            contadorClubes[k]++;
+                        //System.out.println(Jugadores.get(i).getHistorial().get(j).getClub());-----------Comprobando Resultados
+                    }
 
-               };
+                }
             }
         }
-        if(!contadorClubes.equals(new ArrayList())){
+        if(!contadorClubes.equals( new int[clubes.size()])){
             for(int i= 0;clubes.size()>i ; i++){
                 Salida += clubes.get(i) +" Tuvo "+contadorClubes[i]+" jugadores en la fecha: "+ fecha+"\n";
             }
 
         }
-        if (Salida ==""){ Salida = "No hubo jugadores en esa fecha";}
+        if (Salida.equals("")){ Salida = "No hubo jugadores en esa fecha";}
         return Salida;
     }
 
@@ -97,12 +88,12 @@ public class AFA {
             Statement st = connection.createStatement();
             java.sql.Date fecha_in;
             java.sql.Date fecha_fin;
-            for (int i=0;Jugadores.size()>i;i++){
-                st.execute("INSERT INTO `afa`.`jugador` (`DNI`, `nombre`) VALUES ('"+Jugadores.get(i).getDNI() +"', '"+Jugadores.get(i).getNombre()+"');");
-                for(int j=0;Jugadores.get(i).getHistorial().size() >j; j++){
-                    fecha_in = new java.sql.Date(Jugadores.get(i).getHistorial().get(j).getFecha_in().getTime());
-                    fecha_fin = new java.sql.Date(Jugadores.get(i).getHistorial().get(j).getFecha_fin().getTime());
-                    st.execute("INSERT INTO `afa`.`contratos` (`DNI`, `fechaInicio`, `fechaFin`, `club`, `posicion`) VALUES ('"+Jugadores.get(i).getHistorial().get(j).getDNI()+"', '"+fecha_in+"', '"+fecha_fin+"', '"+Jugadores.get(i).getHistorial().get(j).getClub()+"', '"+Jugadores.get(i).getHistorial().get(j).getPosicion()+"');");
+            for (Jugador jugadore : Jugadores) {
+                st.execute("INSERT INTO `afa`.`jugador` (`DNI`, `nombre`) VALUES ('" + jugadore.getDNI() + "', '" + jugadore.getNombre() + "');");
+                for (int j = 0; jugadore.getHistorial().size() > j; j++) {
+                    fecha_in = new java.sql.Date(jugadore.getHistorial().get(j).getFecha_in().getTime());
+                    fecha_fin = new java.sql.Date(jugadore.getHistorial().get(j).getFecha_fin().getTime());
+                    st.execute("INSERT INTO `afa`.`contratos` (`DNI`, `fechaInicio`, `fechaFin`, `club`, `posicion`) VALUES ('" + jugadore.getHistorial().get(j).getDNI() + "', '" + fecha_in + "', '" + fecha_fin + "', '" + jugadore.getHistorial().get(j).getClub() + "', '" + jugadore.getHistorial().get(j).getPosicion() + "');");
 
                 }
             }

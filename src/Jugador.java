@@ -1,10 +1,11 @@
 import java.sql.*;
 import java.util.ArrayList;
+
 import java.util.List;
 
 public class Jugador implements jugadorRegistrable{
-    private String  Nombre,Telefono,emails,club;
-    private int DNI;
+    private final String  Nombre;
+    private final int DNI;
     private List<contrato> historial;
 
     static final String url="jdbc:mysql://localhost:3306/";
@@ -20,9 +21,7 @@ public class Jugador implements jugadorRegistrable{
     public String getNombre() {
         return this.Nombre;
     }
-    public String getClub() {
-        return club;
-    }
+
 
     public int getDNI() {
         return DNI;
@@ -74,7 +73,7 @@ public class Jugador implements jugadorRegistrable{
         try {
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
-            ResultSet rs = st.getResultSet();
+            ResultSet rs ;
             rs = st.executeQuery("SELECT * FROM afa.jugador");
 
             while(rs.next()){
@@ -100,11 +99,11 @@ public class Jugador implements jugadorRegistrable{
     public List<Jugador> readToLista() {
         Connection connection = null;
         List<Jugador> listaRetorno = new ArrayList<>();
-        List<contrato> contratoList= new ArrayList<>();
+        List<contrato> contratoList;
         try {
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
-            ResultSet rs = st.getResultSet();
+            ResultSet rs ;
             rs = st.executeQuery("SELECT * FROM afa.jugador");
 
             while(rs.next()){
@@ -112,7 +111,7 @@ public class Jugador implements jugadorRegistrable{
                 String  aNombre=rs.getString("nombre");
                 contratoList = contrato.readDNI(aDNI);
                 listaRetorno.add(new Jugador(aNombre,aDNI,contratoList));
-                contratoList= new ArrayList<>();
+
             }
         }
         catch (Exception e) {
@@ -127,7 +126,9 @@ public class Jugador implements jugadorRegistrable{
                 e.printStackTrace();
             }
         }
-        if(listaRetorno == null){System.out.println("Lista de Jugadores Vacia");};
+        if(listaRetorno.equals(new ArrayList<Jugador>())){
+            System.out.println("Lista de Jugadores Vacia");
+        }
         return listaRetorno;
     }
 
