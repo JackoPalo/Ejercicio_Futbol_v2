@@ -9,7 +9,7 @@ public class AFA {
     
     List<Jugador> Jugadores = new ArrayList();
 
-    public List<contrato> generarHistorial(int DNis,List<String> clubes){
+    public List<contrato> generarHistorial(int DNis,List<Equipos> clubes){
         String[] Posiciones = {"Atacante","Defensor","Central"};
         Date fecha_ini = new Date();
         Date fecha_fin = new Date();
@@ -17,13 +17,13 @@ public class AFA {
         for (int i=0;clubes.size() > i;i++) {
             fecha_ini = new Date((int) (117-Math.random()*5), 1, 3);
             fecha_fin = new Date((int)(117+Math.random()*2), 1, 3);
-            sHistorial.add(new contrato(DNis, clubes.get(i), Posiciones[i % 3], fecha_ini, fecha_fin));
+            sHistorial.add(new contrato(DNis, clubes.get(i).getNombre(), Posiciones[(int)(Math.random()*10)%3], fecha_ini, fecha_fin));
         }
 
         return sHistorial;
     }
 
-    public AFA(List<String> clubes){
+    public AFA(List<Equipos> clubes){
 
         Integer[] DNis = { 1,2,3 ,4 ,5,6,7,8,9,10,11,12};
         String[] nombres ={"algo1","algo2","algo3","algo4","algo5", "algo6","algo7","algo8","algo9","algoA10","algoA11","algoC"};
@@ -43,7 +43,7 @@ public class AFA {
                 System.out.println(Jugadores.get(i).getNombre() + " Jugo en "+
                         Jugadores.get(i).getHistorial().size() +" clubes");
                 for(int j=0;Jugadores.get(i).getHistorial().size()>j ;j++){
-                   System.out.println("   "+ Jugadores.get(i).getHistorial().get(j).getClub()+" desde "+Jugadores.get(i).getHistorial().get(j).getFecha_in()+" hasta "+Jugadores.get(i).getHistorial().get(j).getFecha_fin() );
+                   System.out.println("   "+ Jugadores.get(i).getHistorial().get(j).getClub()+" desde "+Jugadores.get(i).getHistorial().get(j).getFecha_in()+" hasta "+Jugadores.get(i).getHistorial().get(j).getFecha_fin()+Jugadores.get(i).getHistorial().get(j).getPosicion());
                 }
         }
 
@@ -57,11 +57,11 @@ public class AFA {
         });
     }
 
-    public String jugadoresPorFecha(Date fecha,List<String> clubes){
-        clubes.sort(new Comparator<String>() {
+    public String jugadoresPorFecha(Date fecha,List<Equipos> clubes){
+        clubes.sort(new Comparator<Equipos>() {
             @Override
-            public int compare(String s, String t1) {
-                return s.compareToIgnoreCase(t1);
+            public int compare(Equipos s, Equipos t1) {
+                return s.getNombre().compareToIgnoreCase(t1.getNombre());
             }
         });
         String Salida = "";
@@ -71,7 +71,7 @@ public class AFA {
                if( fecha.after(Jugadores.get(i).getHistorial().get(j).getFecha_in()) && fecha.before(Jugadores.get(i).getHistorial().get(j).getFecha_fin())){
                    //Salida+= Jugadores.get(i).getDNI()+" Jugo en  "+ Jugadores.get(i).getHistorial().get(j).getClub()+" desde "+ Jugadores.get(i).getHistorial().get(j).getFecha_in()+" hasta "+Jugadores.get(i).getHistorial().get(j).getFecha_fin()+"\n";
                   for(int k = 0;clubes.size() > k ; k++){
-                     if(Jugadores.get(i).getHistorial().get(j).getClub().equals(clubes.get(k)))
+                     if(Jugadores.get(i).getHistorial().get(j).getClub().equals(clubes.get(k).getNombre()))
                        contadorClubes[k]++;
                       //System.out.println(Jugadores.get(i).getHistorial().get(j).getClub());-----------Comprobando Resultados
                   }
