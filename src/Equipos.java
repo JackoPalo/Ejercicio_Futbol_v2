@@ -69,8 +69,25 @@ public class Equipos implements equioRegistrable {
     @Override
     public void update() {
 
-    }
+        Connection connection = null;
+        try {
+            int Cid=0;
+            connection = DriverManager.getConnection(url, usr, pwd);
+            Statement st = connection.createStatement();
+            st.execute(" UPDATE `afa`.`contratos` SET `CUIT`='"+this.getCUIT()+",  `nombre`= '"+this.getNombre() +", `division`='"+ this.Division+"'', WHERE (`CUIT` = '"+this.getCUIT()+"');");
 
+        }catch (Exception e){
+            System.out.println("insert in contrato->"+e.getMessage());
+        } finally {
+            try{
+                if ( connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     public void read() {
         Connection connection = null;
@@ -109,6 +126,24 @@ public class Equipos implements equioRegistrable {
 
     @Override
     public void delete() {
+        Connection connection = null;
+        try {
 
+            connection = DriverManager.getConnection(url, usr, pwd);
+            Statement st = connection.createStatement();
+
+            st.execute("DELETE FROM `afa`.`Equipos` WHERE (`CUIT` = '"+this.getCUIT()+"');");
+
+        }catch (Exception e){
+            System.out.println(" delete in Equipos ->   "+e.getMessage());
+        } finally {
+            try{
+                if ( connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

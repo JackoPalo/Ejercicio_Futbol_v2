@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Jugador implements jugadorRegistrable{
-    private final String  Nombre;
-    private final int DNI;
+
+    private String  Nombre;
+    private int DNI;
     private List<contrato> historial;
 
     static final String url="jdbc:mysql://localhost:3306/";
@@ -13,7 +14,7 @@ public class Jugador implements jugadorRegistrable{
     static final String pwd="";
 
     public Jugador(String nombre, int DNI, List<contrato> historial) {
-        Nombre = nombre;
+        this.Nombre = nombre;
         this.DNI = DNI;
         this.historial = historial;
     }
@@ -27,8 +28,22 @@ public class Jugador implements jugadorRegistrable{
         return DNI;
     }
 
+
     public List<contrato> getHistorial() {
         return historial;
+    }
+
+    public void setDNI(int aDNI) {
+
+         this.DNI = DNI;
+    }
+
+    public void setNombre(String nombre) {
+        this.Nombre = nombre;
+    }
+
+    public void setHistorial(List<contrato> historial) {
+        this.historial = historial;
     }
 
     @Override
@@ -39,14 +54,10 @@ public class Jugador implements jugadorRegistrable{
 
             connection = DriverManager.getConnection(url, usr, pwd);
             Statement st = connection.createStatement();
-            java.sql.Date fecha_in;
-            java.sql.Date fecha_fin;
+
             st.execute("INSERT INTO `afa`.`jugador` (`DNI`, `nombre`) VALUES ('"+this.getDNI() +"', '"+this.getNombre()+"');");
             for(int j=0;this.getHistorial().size() >j; j++){
-                fecha_in = new java.sql.Date(this.getHistorial().get(j).getFecha_in().getTime());
-                fecha_fin = new java.sql.Date(this.getHistorial().get(j).getFecha_fin().getTime());
-                st.execute("INSERT INTO `afa`.`contratos` (`DNI`, `fechaInicio`, `fechaFin`, `club`, `posicion`) VALUES ('"+this.getHistorial().get(j).getDNI()+"', '"+fecha_in+"', '"+fecha_fin+"', '"+this.getHistorial().get(j).getClub()+"', '"+this.getHistorial().get(j).getPosicion()+"');");
-
+               this.getHistorial().get(j).insert();
             }
         }catch (Exception e){
             System.out.println(" insert in Jugador ->   "+e.getMessage());
@@ -65,9 +76,29 @@ public class Jugador implements jugadorRegistrable{
     @Override
     public void update() {
 
+        Connection connection = null;
+        try {
+            int Cid=0;
+            connection = DriverManager.getConnection(url, usr, pwd);
+            Statement st = connection.createStatement();
+            java.sql.Date fecha_in;
+            java.sql.Date fecha_fin;
+            st.execute(" UPDATE `afa`.`jugador` SET  `nombre`= '"+this.getNombre() +"' WHERE (`DNI` = '"+this.getDNI()+"');");
+
+        }catch (Exception e){
+            System.out.println("update in Jugador->"+e.getMessage());
+        } finally {
+            try{
+                if ( connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
-    //@Override
+    @Override
     public void read() {
         Connection connection = null;
         try {
@@ -135,5 +166,25 @@ public class Jugador implements jugadorRegistrable{
     @Override
     public void delete() {
 
+        Connection connection = null;
+        try {
+
+            connection = DriverManager.getConnection(url, usr, pwd);
+            Statement st = connection.createStatement();
+            java.sql.Date fecha_in;
+            java.sql.Date fecha_fin;
+            st.execute("DELETE FROM `afa`.`jugador` WHERE (`DNI` = '"+this.getDNI()+"');");
+
+        }catch (Exception e){
+            System.out.println(" delete in Jugador ->   "+e.getMessage());
+        } finally {
+            try{
+                if ( connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
