@@ -33,11 +33,6 @@ public class Jugador implements jugadorRegistrable{
         return historial;
     }
 
-    public void setDNI(int aDNI) {
-
-         this.DNI = DNI;
-    }
-
     public void setNombre(String nombre) {
         this.Nombre = nombre;
     }
@@ -96,7 +91,7 @@ public class Jugador implements jugadorRegistrable{
                 e.printStackTrace();
             }
         }
-    }
+    }//solo update nombre
 
     @Override
     public void read() {
@@ -105,14 +100,11 @@ public class Jugador implements jugadorRegistrable{
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
             ResultSet rs ;
-            rs = st.executeQuery("SELECT * FROM afa.jugador");
-
-            while(rs.next()){
+            rs = st.executeQuery("SELECT * FROM `afa`.`jugador` WHERE (`DNI` ='"+this.getDNI()+"')");
+            rs.next();
                 int aDNI= rs.getInt("DNI");
                 String  aNombre=rs.getString("nombre");
                 System.out.println("DNI: "+aDNI+" -  Nombre: "+aNombre);
-            }
-
         }
         catch (Exception e) {
             System.out.println(" read in Jugador ->   "+e.getMessage());
@@ -127,6 +119,53 @@ public class Jugador implements jugadorRegistrable{
         }
 
     }
+
+    public void deleteHistorial() {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(url, usr, pwd);
+            Statement st = connection.createStatement();
+            st.execute("DELETE FROM `afa`.`contratos` WHERE (`DNI` = '"+this.getDNI()+"');");
+
+        }catch (Exception e){
+            System.out.println(" delete in contratos ->   "+e.getMessage());
+        } finally {
+            try{
+                if ( connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    @Override
+    public void delete() {
+
+        Connection connection = null;
+        try {
+
+            connection = DriverManager.getConnection(url, usr, pwd);
+            Statement st = connection.createStatement();
+            java.sql.Date fecha_in;
+            java.sql.Date fecha_fin;
+            st.execute("DELETE FROM `afa`.`jugador` WHERE (`DNI` = '"+this.getDNI()+"');");
+            this.deleteHistorial();// Borra historial de Jugador
+
+        }catch (Exception e){
+            System.out.println(" delete in Jugador ->   "+e.getMessage());
+        } finally {
+            try{
+                if ( connection != null){
+                    connection.close();
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }//Eliminia historial de Jugador
+
+
     public List<Jugador> readToLista() {
         Connection connection = null;
         List<Jugador> listaRetorno = new ArrayList<>();
@@ -163,28 +202,33 @@ public class Jugador implements jugadorRegistrable{
         return listaRetorno;
     }
 
-    @Override
-    public void delete() {
-
+    public void readHistorial() {
         Connection connection = null;
         try {
-
-            connection = DriverManager.getConnection(url, usr, pwd);
+            connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
-            java.sql.Date fecha_in;
-            java.sql.Date fecha_fin;
-            st.execute("DELETE FROM `afa`.`jugador` WHERE (`DNI` = '"+this.getDNI()+"');");
+            ResultSet rs;
+            rs = st.executeQuery("SELECT * FROM afa.contratos WHERE (DNI = '"+ this.getDNI()+"')");
 
-        }catch (Exception e){
-            System.out.println(" delete in Jugador ->   "+e.getMessage());
+            while(rs.next()) {
+                System.out.println(" DNI: "+ rs.getInt("DNI") + " Club: " +rs.getString("club") + " desde:" + rs.getDate("fechaInicio").toString()+ " hasta " + rs.getDate("fechaFin").toString() + " CUIT:"+rs.getInt("CUIT"));
+
+            }
+        }
+        catch (Exception e) {
+            System.out.println("readHistorial in Jugador->"+e.getMessage());
         } finally {
-            try{
-                if ( connection != null){
+            try {
+                if (connection != null) {
                     connection.close();
                 }
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
+
+
     }
+
+
 }

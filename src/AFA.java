@@ -7,9 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 public class AFA {
-    List<Equipos> clubes =new ArrayList<>();
+    List<Equipos> clubes;
     List<Jugador> Jugadores = new ArrayList<>();
-
     public List<contrato> generarHistorial(int DNis,List<Equipos> clubes){
         String[] Posiciones = {"Atacante","Defensor","Central"};
         Date fecha_ini;

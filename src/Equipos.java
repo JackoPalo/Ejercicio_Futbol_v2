@@ -68,7 +68,7 @@ public class Equipos implements equioRegistrable {
 
     @Override
     public void update() {
-
+        /*
         Connection connection = null;
         try {
             int Cid=0;
@@ -87,14 +87,15 @@ public class Equipos implements equioRegistrable {
                 e.printStackTrace();
             }
         }
+
+         */
     }
+
     @Override
     public void read() {
         Connection connection = null;
         List<Equipos> equipoList= new ArrayList<>();
         try {
-            //Class.forName("com.mysql.cj.jdbc.Driver");
-            //connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/?user=root&password=");
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
             ResultSet rs;
@@ -146,4 +147,5 @@ public class Equipos implements equioRegistrable {
             }
         }
     }
+
 }
