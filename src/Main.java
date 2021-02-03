@@ -5,6 +5,8 @@ public class Main {
 
         AFA Asociacion = new AFA();
 
+
+/*
         Asociacion.borrarTabla();
         Asociacion.cargarAtabla();
         Asociacion.Jugadores.get(5).getHistorial().get(0).read();
@@ -14,7 +16,7 @@ public class Main {
         Asociacion.Jugadores.get(5).readHistorial();
         Asociacion.Jugadores.get(5).deleteHistorial();
         Asociacion.Jugadores.get(5).delete();
-
+*/
     }
 
 }
