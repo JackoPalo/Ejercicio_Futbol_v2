@@ -1,14 +1,20 @@
+package DAOs;
+
+import DTOs.*;
+import Mainea.equipos;
+import Servs.ServEquiposImp;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class equiposDAOImp implements equipoDAO{
+public class equiposDAOImp implements equiposDAO {
     static final String url="jdbc:mysql://localhost:3306/";
     static final String usr="root";
     static final String pwd="";
 
     @Override
-    public void insert(equiposDTOImpo equipos) {
+    public void insert(equiposDTOImp equipos) {
 
         Connection connection = null;
         try {
@@ -34,17 +40,16 @@ public class equiposDAOImp implements equipoDAO{
 
 
     @Override
-    public void update(equiposDTOImpo equipos) {
-        /*
+    public void update(equiposDTOImp equipos) {
+
         Connection connection = null;
         try {
-            int Cid=0;
             connection = DriverManager.getConnection(url, usr, pwd);
             Statement st = connection.createStatement();
-            st.execute(" UPDATE `afa`.`contratos` SET `CUIT`='"+this.getCUIT()+",  `nombre`= '"+this.getNombre() +", `division`='"+ this.Division+"'', WHERE (`CUIT` = '"+this.getCUIT()+"');");
+            st.execute(" UPDATE `afa`.`contratos` SET `CUIT`='"+equipos.getCUIT()+",  `nombre`= '"+equipos.getNombre() +", `division`='"+ equipos.getDivision()+"'', WHERE (`CUIT` = '"+equipos.getCUIT()+"');");
 
         }catch (Exception e){
-            System.out.println("insert in contrato->"+e.getMessage());
+            System.out.println("insert in Mainea.contrato->"+e.getMessage());
         } finally {
             try{
                 if ( connection != null){
@@ -55,13 +60,14 @@ public class equiposDAOImp implements equipoDAO{
             }
         }
 
-         */
+
     }
 
     @Override
-    public void read(equiposDTOImpo equipos) {
+    public void read(equiposDTOImp equipos) {
         Connection connection = null;
-        List<equiposDTOImpo> equipoList= new ArrayList<>();
+        List<equiposDTOImp> equipoList= new ArrayList<>();
+        ServEquiposImp ServE = new ServEquiposImp();
         try {
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
@@ -69,7 +75,7 @@ public class equiposDAOImp implements equipoDAO{
             rs = st.executeQuery("SELECT * FROM afa.equipos");
 
             while(rs.next()) {
-                equipoList.add(new equiposDTOImpo(rs.getInt("CUIT"), rs.getString("Nombre"), rs.getString("Division")));
+                equipoList.add(ServE.equiposModelToDTO(new equipos(rs.getInt("CUIT"), rs.getString("Nombre"), rs.getString("Division"))));
             }
             rs.beforeFirst();
         }
@@ -85,7 +91,7 @@ public class equiposDAOImp implements equipoDAO{
             }
         }
 
-        for (equiposDTOImpo equipo : equipoList) {
+        for (equiposDTOImp equipo : equipoList) {
             System.out.println("   " + equipo.getCUIT() + " desde " + equipo.getNombre() + " hasta " + equipo.getDivision());
         }
 
@@ -93,17 +99,17 @@ public class equiposDAOImp implements equipoDAO{
     }
 
     @Override
-    public void delete(equiposDTOImpo equipos) {
+    public void delete(equiposDTOImp equipos) {
         Connection connection = null;
         try {
 
             connection = DriverManager.getConnection(url, usr, pwd);
             Statement st = connection.createStatement();
 
-            st.execute("DELETE FROM `afa`.`Equipos` WHERE (`CUIT` = '"+equipos.getCUIT()+"');");
+            st.execute("DELETE FROM `afa`.`Mainea.Equipos` WHERE (`CUIT` = '"+equipos.getCUIT()+"');");
 
         }catch (Exception e){
-            System.out.println(" delete in Equipos ->   "+e.getMessage());
+            System.out.println(" delete in Mainea.Equipos ->   "+e.getMessage());
         } finally {
             try{
                 if ( connection != null){

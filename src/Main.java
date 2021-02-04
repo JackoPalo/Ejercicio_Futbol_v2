@@ -1,22 +1,22 @@
+import java.util.Date;
+
+
+import Servs.*;
+
 
 public class Main {
 
     public static void main(String[] args) {
 
-        AFA Asociacion = new AFA();
+        ServEquiposImp afa = new ServEquiposImp();
+        ServJugadorImp ServJ = new ServJugadorImp();
+        ServContratoImp ServC = new ServContratoImp();
+        afa.borrarTabla();
+        afa.cargarAtabla();
+        afa.MostrarLista();
+        System.out.println(afa.jugadoresPorFecha(new Date(116,1,3), afa.clubes));
+        ServC.read(afa.Jugadores.get(5).getHistorial().get(0) );
 
-
-/*
-        Asociacion.borrarTabla();
-        Asociacion.cargarAtabla();
-        Asociacion.Jugadores.get(5).getHistorial().get(0).read();
-        Asociacion.Jugadores.get(5).getHistorial().get(0).delete();
-
-        Asociacion.Jugadores.get(5).read();
-        Asociacion.Jugadores.get(5).readHistorial();
-        Asociacion.Jugadores.get(5).deleteHistorial();
-        Asociacion.Jugadores.get(5).delete();
-*/
     }
 
 }

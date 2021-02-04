@@ -1,3 +1,9 @@
+package DAOs;
+
+import DTOs.*;
+import Mainea.contrato;
+import Servs.ServContratoImp;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +15,7 @@ public class contratoDAOImp implements contratoDAO{
     static final String pwd="";
 
     @Override
-    public void insert(contratoDTO contrato) {
+    public void insert(contratoDTOImp contrato) {
 
         Connection connection = null;
         try {
@@ -24,7 +30,7 @@ public class contratoDAOImp implements contratoDAO{
 
 
         }catch (Exception e){
-            System.out.println("insert in contrato->"+e.getMessage());
+            System.out.println("insert in Mainea.contrato->"+e.getMessage());
         } finally {
             try{
                 if ( connection != null){
@@ -38,7 +44,7 @@ public class contratoDAOImp implements contratoDAO{
     }
 
     @Override
-    public void update( contratoDTO contrato) {
+    public void update( contratoDTOImp contrato) {
 
         Connection connection = null;
         try {
@@ -52,7 +58,7 @@ public class contratoDAOImp implements contratoDAO{
 
 
         }catch (Exception e){
-            System.out.println("update in contrato->"+e.getMessage());
+            System.out.println("update in Mainea.contrato->"+e.getMessage());
         } finally {
             try{
                 if ( connection != null){
@@ -66,21 +72,20 @@ public class contratoDAOImp implements contratoDAO{
     }
 
     @Override
-    public void read(contratoDTO contrato) {
+    public void read(contratoDTOImp contrato) {
         Connection connection = null;
-        List<contrato> contratoList= new ArrayList<>();
+
         try {
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
             ResultSet rs;
-            java.sql.Date fecha_in = new java.sql.Date(contrato.getFecha_in().getTime());
             rs = st.executeQuery("SELECT * FROM afa.contratos WHERE (`DNI` = '"+contrato.getDNI()+"') and (`CUIT` = '"+contrato.getCUIT()+"');");
             rs.next();
             System.out.println(" DNI: "+ rs.getInt("DNI") + " Club: " +rs.getString("club") + " desde:" + rs.getDate("fechaInicio").toString()+ " hasta " + rs.getDate("fechaFin").toString() + " CUIT:"+rs.getInt("CUIT"));
 
         }
         catch (Exception e) {
-            System.out.println("read in contrato->"+e.getMessage());
+            System.out.println("read in Mainea.contrato->"+e.getMessage());
         } finally {
             try {
                 if (connection != null) {
@@ -97,9 +102,9 @@ public class contratoDAOImp implements contratoDAO{
 
     }
 
-    public static List<contratoDTO> readDNI(int aDNI) {
+    public List<contratoDTOImp> readDNI(int aDNI) {
         Connection connection = null;
-        List<contratoDTO> contratoList= new ArrayList<>();
+        List<contrato> contratoList= new ArrayList<>();
         try {
             connection = DriverManager.getConnection(url,usr,pwd);
             Statement st = connection.createStatement();
@@ -108,13 +113,13 @@ public class contratoDAOImp implements contratoDAO{
 
             while(rs.next()) {
                 if ((rs.getInt("DNI") == aDNI)) {
-                    contratoList.add(new contratoDTO(rs.getInt("DNI"), rs.getString("club"), rs.getString("posicion"), rs.getDate("fechaInicio"), rs.getDate("fechaFin"),rs.getInt("CUIT")));
+                    contratoList.add(new contrato(rs.getInt("DNI"), rs.getString("club"), rs.getString("posicion"), rs.getDate("fechaInicio"), rs.getDate("fechaFin"),rs.getInt("CUIT")));
                 }
             }
             rs.beforeFirst();
         }
         catch (Exception e) {
-            System.out.println("readDNI in contrato->"+e.getMessage());
+            System.out.println("readDNI in Mainea.contrato->"+e.getMessage());
         } finally {
             try {
                 if (connection != null) {
@@ -125,15 +130,15 @@ public class contratoDAOImp implements contratoDAO{
             }
         }
 
-        for (contratoDTO dto : contratoList) {
+        for (contrato dto : contratoList) {
             System.out.println("   " + dto.getClub() + " desde " + dto.getFecha_in() + " hasta " + dto.getFecha_fin());
         }
-
-        return contratoList;
+        ServContratoImp Sc = new ServContratoImp();
+        return Sc.contratoToContratoDTO(contratoList);
     }
 
     @Override
-    public void delete(contratoDTO contrato) {
+    public void delete(contratoDTOImp contrato) {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(url, usr, pwd);

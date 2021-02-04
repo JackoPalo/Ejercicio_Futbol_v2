@@ -1,3 +1,7 @@
+package DAOs;
+
+import DTOs.JugadorDTOImp;
+
 import java.util.List;
 
 public interface jugadorDAO {
@@ -8,4 +12,7 @@ public interface jugadorDAO {
     void delete(JugadorDTOImp jugador);
     List<JugadorDTOImp> readToLista();
 
+    void readHistorial(JugadorDTOImp jugadorDTOImp);
+
+    void deleteHistorial(JugadorDTOImp jugadorDTOImp);
 }

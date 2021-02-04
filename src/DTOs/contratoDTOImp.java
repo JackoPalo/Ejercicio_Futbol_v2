@@ -1,21 +1,15 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+package DTOs;
 
-public class contratoDTO {
+import DAOs.contratoDAO;
+import DAOs.contratoDAOImp;
+
+import java.util.Date;
+
+public class contratoDTOImp implements contratoDTO {
 
     private int DNI,CUIT;
     private String posicion,club;
     private Date fecha_in,fecha_fin;
-
-    public contratoDTO(int DNI, String club, String posicion, Date fecha_in, Date fecha_fin, int CUIT) {
-        this.DNI = DNI;
-        this.club = club;
-        this.posicion = posicion;
-        this.fecha_in = fecha_in;
-        this.fecha_fin = fecha_fin;
-        this.CUIT=CUIT;
-    }
 
     public int getDNI() {
         return DNI;
@@ -39,6 +33,19 @@ public class contratoDTO {
 
     public int getCUIT() { return this.CUIT; }
 
+
+    public void setDNI(int DNI) {
+        this.DNI = DNI;
+    }
+
+    public void setCUIT(int CUIT) {
+        this.CUIT = CUIT;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
+    }
+
     public void setPosicion(String posicion) {
         this.posicion = posicion;
     }
@@ -48,7 +55,6 @@ public class contratoDTO {
     public void setFecha_fin(Date fecha_fin) {
         this.fecha_fin = fecha_fin;
     }
-
 
 
 }

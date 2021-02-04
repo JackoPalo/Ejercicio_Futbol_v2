@@ -1,10 +1,8 @@
+package Mainea;
+
 import java.util.Date;
 
 public class contrato {
-
-    static final String url="jdbc:mysql://localhost:3306/";
-    static final String usr="root";
-    static final String pwd="";
 
     private int DNI,CUIT;
     private String posicion,club;
@@ -20,11 +18,11 @@ public class contrato {
     }
 
     public int getDNI() {
-        return DNI;
+        return this.DNI;
     }
 
     public String getPosicion() {
-        return posicion;
+        return this.posicion;
     }
 
     public String getClub() {
@@ -32,11 +30,11 @@ public class contrato {
     }
 
     public Date getFecha_in() {
-        return fecha_in;
+        return this.fecha_in;
     }
 
     public Date getFecha_fin() {
-        return fecha_fin;
+        return this.fecha_fin;
     }
 
     public int getCUIT() { return CUIT; }
@@ -53,4 +51,15 @@ public class contrato {
         this.fecha_fin = fecha_fin;
     }
 
+    public void setDNI(int DNI) {
+        this.DNI = DNI;
+    }
+
+    public void setCUIT(int CUIT) {
+        this.CUIT = CUIT;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
+    }
 }
