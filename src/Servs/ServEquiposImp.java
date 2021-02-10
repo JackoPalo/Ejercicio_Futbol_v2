@@ -43,17 +43,17 @@ public class ServEquiposImp implements ServEquipo{
 
     public void insert(equiposDTOImp club) {
         equiposDAOImp cDAO = new  equiposDAOImp();
-        cDAO.delete(club);
+        cDAO.insert(club);
     }
 
     public void update(equiposDTOImp club) {
         equiposDAOImp cDAO = new  equiposDAOImp();
-        cDAO.delete(club);
+        cDAO.update(club);
     }
 
     public void read(equiposDTOImp club) {
         equiposDAOImp cDAO = new  equiposDAOImp();
-        cDAO.delete(club);
+        cDAO.read(club);
     }
 
     public void delete(equiposDTOImp club) {
@@ -64,8 +64,6 @@ public class ServEquiposImp implements ServEquipo{
 
     public List<equiposDTOImp> clubes;
     public List<JugadorDTOImp> Jugadores = new ArrayList<>();
-    ServJugadorImp ServJ = new ServJugadorImp();
-
     public void jugadoresRandom(){
         ServJugadorImp ServJ = new ServJugadorImp();
         ServContratoImp ServC = new ServContratoImp();
